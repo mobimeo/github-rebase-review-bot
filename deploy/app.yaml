@@ -1,0 +1,100 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Parameters:
+  AppId:
+    Description: The id of the GitHub App
+    Type: String
+
+Resources:
+  Table:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: pull_request_url
+        AttributeType: S
+      KeySchema:
+      - AttributeName: pull_request_url
+        KeyType: HASH
+      TableName: !Sub ${AWS::StackName}-Table
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+  PrivateKey:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Sub ${AWS::StackName}-PrivateKey
+      Description: The base58 encoded private key pem for the bot
+      SecretString: 'replace me'
+
+  WebhookSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Sub ${AWS::StackName}-WebhookSecret
+      Description: The base58 encoded private key pem for the bot
+      SecretString: 'replace me'
+
+  HttpApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda.probot
+      Runtime: nodejs12.x
+      Role: !GetAtt Role.Arn
+      CodeUri: ../bundle.zip
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: !Sub ${AWS::StackName}-Table
+          PRIVATE_KEY_SECRET_NAME: !Sub ${AWS::StackName}-PrivateKey
+          WEBHOOK_SECRET_SECRET_NAME: !Sub ${AWS::StackName}-WebhookSecret
+          APP_ID: !Ref AppId
+      Events:
+        ApiEvent:
+          Type: HttpApi
+          Properties:
+            RouteSettings:
+              # Limit the maximum number of concurrent requests to guard
+              # against an unreasonable amount of API invocations.
+              ThrottlingBurstLimit: 100
+
+  Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: CloudwatchLogPolicy
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            - logs:CreateLogGroup
+            Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:*"
+      - PolicyName: DynamoDBPolicy
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+          - Effect: Allow
+            Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            Resource: !GetAtt Table.Arn
+      - PolicyName: SecretPolicy
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+          - Effect: Allow
+            Action:
+            - secretsmanager:GetSecretValue
+            Resource:
+            - !Ref PrivateKey
+            - !Ref WebhookSecret
