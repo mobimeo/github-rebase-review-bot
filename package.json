@@ -1,13 +1,13 @@
 {
-  "name": "rrp",
+  "name": "github-rebase-review-bot",
   "version": "1.0.0",
   "private": true,
   "description": "A Probot app",
   "author": "Magnus Kulke <magnus.kulke@reach-now.com>",
   "license": "ISC",
-  "repository": "https://github.com/reach-now/rrp.git",
-  "homepage": "https://github.com/reach-now/rrp",
-  "bugs": "https://github.com/reach-now/rrp/issues",
+  "repository": "https://github.com/reach-now/github-rebase-review-bot.git",
+  "homepage": "https://github.com/reach-now/github-rebase-review-bot",
+  "bugs": "https://github.com/reach-now/github-rebase-review-bot/issues",
   "keywords": [
     "probot",
     "github",

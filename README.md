@@ -1,4 +1,4 @@
-# rrp (rebase review plz)
+# GitHub Rebase Review Bot
 
 A GitHub App built with [Probot](https://github.com/probot/probot) to undo automatic PR review dismissals, given the diff did not change since the last approval. The hashes are stored in AWS DynamoDB.
 
@@ -54,7 +54,7 @@ aws cloudformation package \
   --template-file deploy/app.yaml \
   --s3-bucket cf-templates-106qhq40bhwiu-eu-west-1 \
   --output-template-file output.yaml
-cfn-go cu output.yaml deploy/rrp.legacy.json
+cfn-go cu output.yaml deploy/github-rebase-review-bot.legacy.json
 ```
 
 ### Secrets
@@ -79,7 +79,7 @@ You can inspect the lambda logs or the activity log in the GitHub App's "Advance
 
 ## Contributing
 
-If you have suggestions for how rrp could be improved, or want to report a bug, open an issue! We'd love all and any contributions.
+If you have suggestions for how github-rebase-review-bot could be improved, or want to report a bug, open an issue! We'd love all and any contributions.
 
 For more, check out the [Contributing Guide](CONTRIBUTING.md).
 
