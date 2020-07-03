@@ -99,8 +99,10 @@ Resources:
           Statement:
           - Effect: Allow
             Action:
-            - logs:*
-            Resource: arn:aws:logs:*:*:*
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            - logs:CreateLogGroup
+            Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:*"
       - PolicyName: DynamoDBPolicy
         PolicyDocument:
           Version: 2012-10-17
