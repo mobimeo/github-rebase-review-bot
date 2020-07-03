@@ -1,0 +1,16 @@
+{
+  "review": {
+    "pull_request_url": "https://api.github.com/repos/blub/bla/pulls/1",
+    "state": "changes_requested"
+  },
+  "action": "submitted",
+  "pull_request": {
+    "number": 1
+  },
+  "repository": {
+    "name": "bla",
+    "owner": {
+      "login": "blub"
+    }
+  }
+}

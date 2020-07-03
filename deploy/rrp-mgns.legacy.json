@@ -1,0 +1,14 @@
+[
+  {
+    "ParameterKey": "SquadTag",
+    "ParameterValue": "transit"
+  },
+  {
+    "ParameterKey": "CostCenterTag",
+    "ParameterValue": "4000"
+  },
+  {
+    "ParameterKey": "AppId",
+    "ParameterValue": "70904"
+  }
+]

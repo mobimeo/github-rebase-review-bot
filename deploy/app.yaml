@@ -1,0 +1,122 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Parameters:
+  CostCenterTag:
+    Description: The cost center for created resources
+    Type: String
+    Default: 4000
+  SquadTag:
+    Description: The name of the squad owning resources
+    Type: String
+    Default: Search
+  AppId:
+    Description: The id of the GitHub App
+    Type: String
+
+Resources:
+  Table:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: pull_request_url
+        AttributeType: S
+      KeySchema:
+      - AttributeName: pull_request_url
+        KeyType: HASH
+      TableName: !Sub ${AWS::StackName}-Table
+      Tags:
+      - Key: CostCenter
+        Value: !Ref CostCenterTag
+      - Key: Squad
+        Value: !Ref SquadTag
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+  PrivateKey:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Sub ${AWS::StackName}-PrivateKey
+      Description: The base58 encoded private key pem for the bot
+      SecretString: 'replace me'
+      Tags:
+      - Key: CostCenter
+        Value: !Ref CostCenterTag
+      - Key: Squad
+        Value: !Ref SquadTag
+
+  WebhookSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Sub ${AWS::StackName}-WebhookSecret
+      Description: The base58 encoded private key pem for the bot
+      SecretString: 'replace me'
+      Tags:
+      - Key: CostCenter
+        Value: !Ref CostCenterTag
+      - Key: Squad
+        Value: !Ref SquadTag
+
+  HttpApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Tags:
+        CostCenter: !Ref CostCenterTag
+        Squad: !Ref SquadTag
+      Handler: lambda.probot
+      Runtime: nodejs12.x
+      Role: !GetAtt Role.Arn
+      CodeUri: ../bundle.zip
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: !Sub ${AWS::StackName}-Table
+          PRIVATE_KEY_SECRET_NAME: !Sub ${AWS::StackName}-PrivateKey
+          WEBHOOK_SECRET_SECRET_NAME: !Sub ${AWS::StackName}-WebhookSecret
+          APP_ID: !Ref AppId
+      Events:
+        ApiEvent:
+          Type: HttpApi
+          Properties:
+            RouteSettings:
+              ThrottlingBurstLimit: 600
+
+  Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Policies:
+      - PolicyName: CloudwatchLogPolicy
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:*
+            Resource: arn:aws:logs:*:*:*
+      - PolicyName: DynamoDBPolicy
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+          - Effect: Allow
+            Action:
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            Resource: !GetAtt Table.Arn
+      - PolicyName: SecretPolicy
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+          - Effect: Allow
+            Action:
+            - secretsmanager:GetSecretValue
+            Resource:
+            - !Ref PrivateKey
+            - !Ref WebhookSecret
