@@ -85,4 +85,4 @@ For more, check out the [Contributing Guide](CONTRIBUTING.md).
 
 ## License
 
-[ISC](LICENSE) © 2020 Magnus Kulke <magnus.kulke@reach-now.com>
+[ISC](LICENSE) © 2020 moovel Group GmbH
