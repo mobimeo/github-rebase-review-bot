@@ -59,7 +59,8 @@ cfn-go cu output.yaml deploy/github-rebase-review-bot.legacy.json
 
 ### Secrets
 
-`WEBHOOK_SECRET` and `PRIVATE_KEY` can be retrieved from the local `.env` file. They need to be stored in the AWS SecretManager objects that have been created in the Stack. `PRIVATE_KEY` should be a pem file and encoded as base64:
+`WEBHOOK_SECRET` and `PRIVATE_KEY` can be retrieved from your local `.env` file. They need to be stored in the AWS SecretManager objects that have been created in the Stack.
+`PRIVATE_KEY` should be a pem file and encoded as base64:
 
 ```
 echo "$PRIVATE_KEY"
