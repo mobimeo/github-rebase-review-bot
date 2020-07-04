@@ -47,7 +47,7 @@ npm run package
 
 ### Template and Deploy SAM Stack
 
-You need to set the `AppId` as Stack Param, it should be generated and stored in the local `.env` file.
+You need to set the `AppId` variable as a CloudFormation stack parameter. It should be generated and stored in your local `.env` file.
 
 ```
 aws cloudformation package \
