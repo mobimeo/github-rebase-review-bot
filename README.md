@@ -1,6 +1,8 @@
 # GitHub Rebase Review Bot
 
-A GitHub App built with [Probot](https://github.com/probot/probot) to re-approves dismisse PR reviews, given the diff did not change since the last approval. The hashes are stored in AWS DynamoDB.
+A GitHub App built with [Probot](https://github.com/probot/probot) to re-approve dismissed _Pull Request_ reviews, given the code changes remain the same after the last approval. All infrastructure orchestration is done with [Amazon Web Services](https://aws.amazon.com/).
+
+It compares changes through a calculated through a hash, which if stored in a AWS DynamoDB Hash Table.
 
 ## Test
 
