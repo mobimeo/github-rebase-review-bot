@@ -21,9 +21,7 @@ async function populateEnvSecrets(): Promise<void> {
 
 const handler: APIGatewayProxyHandler = (event, context, callback) => {
   populateEnvSecrets()
-    .then(() => {
-      return serverlessApp(event, context, callback);
-    })
+    .then(() => serverlessApp(event, context, callback))
     .catch(err => callback(err));
 };
 
