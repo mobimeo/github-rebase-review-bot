@@ -78,7 +78,9 @@ Resources:
           Type: HttpApi
           Properties:
             RouteSettings:
-              ThrottlingBurstLimit: 600
+              # Limit the maximum number of concurrent requests to guard
+              # against an unreasonable amount of API invocations.
+              ThrottlingBurstLimit: 100
 
   Role:
     Type: AWS::IAM::Role
