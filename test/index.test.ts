@@ -41,6 +41,12 @@ describe('reviews', () => {
     probot.load(app);
   });
 
+  afterEach(() => {
+    nock.cleanAll();
+    nock.enableNetConnect();
+    jest.resetAllMocks();
+  });
+
   describe('approved', () => {
     test('writes diff hash to store', async done => {
       const diff = 'some diff';
@@ -114,11 +120,5 @@ describe('reviews', () => {
       // Receive a webhook event
       await probot.receive({ name: 'pull_request_review', payload });
     });
-  });
-
-  afterEach(() => {
-    nock.cleanAll();
-    nock.enableNetConnect();
-    jest.resetAllMocks();
   });
 });
