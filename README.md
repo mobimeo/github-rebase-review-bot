@@ -71,7 +71,7 @@ export SECRET=$(echo "$PRIVATE_KEY" | base64)
 
 ### Webhook Url
 
-After the Stack's deployment the ApiGateway's Url (sth like `https://swmwkyi6rf.execute-api.eu-west-1.amazonaws.com`) needs to be configured as `Webhook URL` in the "General" pane of the GitHub App.
+After the CloudFormation stack's been deployed, the ApiGateway's URL (something like `https://swmwkyi6rf.execute-api.eu-west-1.amazonaws.com`) needs to be configured as `Webhook URL` in the "General" pane of the GitHub App.
 
 ## Debug
 
