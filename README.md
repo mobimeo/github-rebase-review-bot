@@ -56,7 +56,11 @@ aws cloudformation package \
   --template-file deploy/app.yaml \
   --s3-bucket cf-templates-106qhq40bhwiu-eu-west-1 \
   --output-template-file output.yaml
-cfn-go cu output.yaml deploy/github-rebase-review-bot.legacy.json
+aws cloudformation deploy \
+  --stack-name github-rebase-review-bot \
+  --template-file output.yaml \
+  --parameter-overrides AppId=12345 \
+  --capabilities CAPABILITY_IAM
 ```
 
 ### Secrets

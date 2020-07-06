@@ -1,14 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Parameters:
-  CostCenterTag:
-    Description: The cost center for created resources
-    Type: String
-    Default: 4000
-  SquadTag:
-    Description: The name of the squad owning resources
-    Type: String
-    Default: Search
   AppId:
     Description: The id of the GitHub App
     Type: String
@@ -24,11 +16,6 @@ Resources:
       - AttributeName: pull_request_url
         KeyType: HASH
       TableName: !Sub ${AWS::StackName}-Table
-      Tags:
-      - Key: CostCenter
-        Value: !Ref CostCenterTag
-      - Key: Squad
-        Value: !Ref SquadTag
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
@@ -39,11 +26,6 @@ Resources:
       Name: !Sub ${AWS::StackName}-PrivateKey
       Description: The base58 encoded private key pem for the bot
       SecretString: 'replace me'
-      Tags:
-      - Key: CostCenter
-        Value: !Ref CostCenterTag
-      - Key: Squad
-        Value: !Ref SquadTag
 
   WebhookSecret:
     Type: AWS::SecretsManager::Secret
@@ -51,18 +33,10 @@ Resources:
       Name: !Sub ${AWS::StackName}-WebhookSecret
       Description: The base58 encoded private key pem for the bot
       SecretString: 'replace me'
-      Tags:
-      - Key: CostCenter
-        Value: !Ref CostCenterTag
-      - Key: Squad
-        Value: !Ref SquadTag
 
   HttpApiFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Tags:
-        CostCenter: !Ref CostCenterTag
-        Squad: !Ref SquadTag
       Handler: lambda.probot
       Runtime: nodejs12.x
       Role: !GetAtt Role.Arn
