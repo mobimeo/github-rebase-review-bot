@@ -4,15 +4,11 @@
   "private": true,
   "description": "A Probot app",
   "author": "moovel Group GmbH <developers@reach-now.com>",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "repository": "https://github.com/reach-now/github-rebase-review-bot.git",
   "homepage": "https://github.com/reach-now/github-rebase-review-bot",
   "bugs": "https://github.com/reach-now/github-rebase-review-bot/issues",
-  "keywords": [
-    "probot",
-    "github",
-    "probot-app"
-  ],
+  "keywords": ["probot", "github", "probot-app"],
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc && (tsc -w --preserveWatchOutput & nodemon)",

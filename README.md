@@ -88,4 +88,4 @@ For more, check out the [Contributing Guide](CONTRIBUTING.md).
 
 ## License
 
-[ISC](LICENSE) © 2020 moovel Group GmbH
+[Apache 2.0](LICENSE) © 2020 moovel Group GmbH
