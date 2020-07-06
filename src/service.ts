@@ -29,15 +29,16 @@ async function addReview(context: PRContext): Promise<void> {
 }
 
 export async function handleAction(context: PRContext): Promise<void> {
-  const { payload } = context;
-  const { action, review } = payload;
+  const {
+    payload: { action, review },
+  } = context;
 
   const key = review.pull_request_url;
   const hash = await getHash(context);
 
-  if (action == 'submitted' && review.state == 'approved') {
+  if (action === 'submitted' && review.state === 'approved') {
     await set(key, hash);
-  } else if (action == 'dismissed') {
+  } else if (action === 'dismissed') {
     const approvedHash = await get(key);
     if (approvedHash === hash) {
       await addReview(context);

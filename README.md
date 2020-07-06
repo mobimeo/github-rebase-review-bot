@@ -6,9 +6,9 @@ It compares changes through a calculated through a hash, which if stored in a AW
 
 ## Test
 
-```
-npm i
-npm t
+```sh
+npm install
+npm test
 ```
 
 ## Development
@@ -31,7 +31,7 @@ npm run start
 
 ### Start Server
 
-```
+```sh
 npm run dev
 ```
 
@@ -43,7 +43,7 @@ Open `http://localhost:3000/probot` and follow instructions to install it to som
 
 ### Package Lambda Bundle
 
-```
+```sh
 npm run package
 ```
 
@@ -51,7 +51,7 @@ npm run package
 
 You need to set the `AppId` variable as a CloudFormation stack parameter. It should be generated and stored in your local `.env` file.
 
-```
+```sh
 aws cloudformation package \
   --template-file deploy/app.yaml \
   --s3-bucket cf-templates-106qhq40bhwiu-eu-west-1 \
@@ -64,7 +64,7 @@ cfn-go cu output.yaml deploy/github-rebase-review-bot.legacy.json
 `WEBHOOK_SECRET` and `PRIVATE_KEY` can be retrieved from your local `.env` file. They need to be stored in the AWS SecretManager objects that have been created in the Stack.
 `PRIVATE_KEY` should be a pem file and encoded as base64:
 
-```
+```sh
 echo "$PRIVATE_KEY"
 -----BEGIN RSA PRIVATE KEY-----
 ...
